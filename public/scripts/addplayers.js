@@ -18,26 +18,18 @@ function addplayers() {
 
     const cardtitle = document.createElement('h5');
     cardtitle.classList.add('card-title');
-    cardtitle.innerHTML = newteam;
+    cardtitle.innerHTML = playername;
     cardbody.append(cardtitle);
 
-    const addplayerlink = document.createElement('a');
-    addplayerlink.setAttribute('href', "/addplayers/" + newteam);
-    addplayerlink.classList.add('card-link');
-    addplayerlink.innerHTML = 'Add Player';
-    cardbody.append(addplayerlink);
+    const cardsubtitle = document.createElement('h6');
+    cardsubtitle.classList.add('card-subtitle');
+    cardsubtitle.innerHTML = playerrole;
+    cardbody.append(cardsubtitle);
 
-    const editlink = document.createElement('a');
-    editlink.setAttribute('href', "#");
-    editlink.classList.add('card-link');
-    editlink.innerHTML = 'edit';
-    cardbody.append(editlink);
-
-    const deletelink = document.createElement('a');
-    deletelink.setAttribute('href', "#");
-    deletelink.classList.add('card-link');
-    deletelink.innerHTML = 'delete';
-    cardbody.append(deletelink);
+    const cardtext = document.createElement('p');
+    cardtext.classList.add('card-text');
+    cardtext.innerHTML = "Age: "+ playerage + "<br>Skill: " + playerskill;
+    cardbody.append(cardtext);
 
     // card.innerHTML = newteam;
     cardGrid.append(card);

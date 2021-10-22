@@ -56,6 +56,10 @@ app.get('/addplayers/:team', (req, res) => {
     res.render('addplayers', { team: teamname });
 })
 
+app.get('/viewtournament',(req,res)=>{
+    res.render('viewtourney');
+})
+
 app.listen(8000, () => {
     console.log('Listening on Port 8000 . . .');
 });
