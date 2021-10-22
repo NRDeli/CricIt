@@ -23,22 +23,38 @@ app.get('/signup', (req, res) => {
     res.render('signup');
 });
 
-app.post('/checksign', (req, res) => {
-    const email = req.body.first_name;
+app.post('/checksign', async (req, res) => {
+    const email = req.body.email;
+    const fname = req.body.first_name;
+    const lname = req.body.last_name;
+    const user = req.body.username;
+    const pass = req.body.password;
+
+    console.log(req.body);
+
     console.log(email)
-    // try {
-    //     //const {email, password} = req.body;
+    try {
+        //const {email, password} = req.body;
 
-    //     //const encryptedPassword = await bcrypt.hash(password,10)
+        //const encryptedPassword = await bcrypt.hash(password,10)
 
-    //     const sqlQuery = 'INSERT INTO player (id, username, password, email) VALUES (?,?,?,?)';
-    //     const result = await pool.query(sqlQuery, [1, username, password, email]);
+        const sqlQuery = 'INSERT INTO user (firstname,lastname, username, password, email) VALUES (?,?,?,?,?)';
+        const result = await pool.query(sqlQuery, [fname, lname, user, pass, email]);
 
-    //     res.status(200).json({ userId: result.insertId });
-    // } catch (error) {
-    //     res.status(400).send(error.message)
-    // }
+        res.status(200).json({ userId: result.insertId });
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
 });
+
+app.get('/createtournament', (req, res) => {
+    res.render('createtournament.ejs');
+})
+
+app.get('/addplayers/:team', (req, res) => {
+    const teamname = req.params.team;
+    res.render('addplayers', { team: teamname });
+})
 
 app.listen(8000, () => {
     console.log('Listening on Port 8000 . . .');

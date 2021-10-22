@@ -5,8 +5,10 @@
     <title>Register | CricIt</title>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet" href="/stylesheets/signup.css">
 
-    <body class="bg-gradient-primary" style="background-image: url('/images/lords.jpg');">
+    <body class="bg-gradient-primary"
+        style="background-size:cover; background-repeat:no-repeat; background-position:center; background-image: url('/images/lords.jpg');">
         <div class="container">
             <div class="card shadow-lg o-hidden border-0 my-5">
                 <div class="card-body p-0">
@@ -24,23 +26,22 @@
                                 <form class="user" id="signupform" action="/checksign" method="POST">
                                     <div class="row mb-3">
                                         <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
-                                                type="text" id="exampleFirstName" placeholder="First Name"
-                                                name="first_name"></div>
+                                                type="text" placeholder="First Name" name="first_name" required></div>
                                         <div class="col-sm-6"><input class="form-control form-control-user" type="text"
-                                                id="exampleFirstName" placeholder="Last Name" name="last_name"></div>
+                                                placeholder="Last Name" name="last_name" required></div>
                                     </div>
                                     <div class="mb-3"><input class="form-control form-control-user" type="text"
-                                            id="exampleUsername" placeholder="Username" name="username"></div>
+                                            placeholder="Username" name="username" required></div>
                                     <div class="mb-3"><input class="form-control form-control-user" type="email"
-                                            id="exampleInputEmail" aria-describedby="emailHelp"
-                                            placeholder="Email Address" name="email"></div>
+                                            aria-describedby="emailHelp" placeholder="Email Address" name="email"
+                                            required></div>
                                     <div class="row mb-3">
                                         <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user"
-                                                type="password" id="examplePasswordInput" placeholder="Password"
-                                                name="password"></div>
+                                                type="password" placeholder="Password" name="password" required></div>
                                         <div class="col-sm-6"><input class="form-control form-control-user"
-                                                type="password" id="exampleRepeatPasswordInput"
-                                                placeholder="Repeat Password" name="password_repeat"></div>
+                                                type="password" placeholder="Repeat Password" name="password_repeat"
+                                                required>
+                                        </div>
                                     </div>
                                     <br>
                                     <button class="btn btn-primary d-block btn-user w-100" type="submit">Register
@@ -55,9 +56,6 @@
                 </div>
             </div>
         </div>
-        <script src="/assets/js/bs-init.js"></script>
         <script src="/scripts/theme.js"></script>
-        <script id="bs-live-reload" data-sseport="62558" data-lastchange="1634878240908"
-            src="/js/livereload.js"></script>
-        <script src="/signup.js"></script>
+        <script src="/scripts/signup.js"></script>
     </body>

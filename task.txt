@@ -1,0 +1,7 @@
+- Login,Signup
+- Tournament (crud)
+- Matches(crud) + 30 players
+- Players + Scorecard
+
+Add new player, Add existing player(look up in db)
+Create Tournament -> ADD MATCHES / ADD TEAMS / ADD PLAYERS.
