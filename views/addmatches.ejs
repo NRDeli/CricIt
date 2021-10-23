@@ -1,0 +1,85 @@
+<%- include('./partials/header.ejs')%>
+    <link rel="stylesheet" href="/stylesheets/createtournament.css">
+    <div class="container-fluid" style="background-color: aqua;">
+        <div class="row">
+            <h1>Create Tournament</h1>
+            <p>Create a custom tournament.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-3">
+                        <div class="card">
+                            Step 1: Add Teams
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card">
+                            Step 2: Add Players
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="card">
+                            Step 3: Add Matches
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-8">
+                <form action="/createtournament/<%= tourid %>/addmatch" method='post'>
+                    <label for="teamone">Team 1</label>
+                    <select name="teamone" id="teamone">
+                        <option value="0">---SELECT TEAM 1---</option>
+                        <%for(let i=0;i<=<%=row.length%>;i++){%>
+                            <option value="<%= row[i].team_name %>">
+                                <%= row[i].team_name %>
+                            </option>
+                            <%}%>
+                    </select><br>
+                    <label for="teamtwo">Team 2</label>
+                    <select name="teamtwo" id="teamtwo">
+                        <option value="0">---SELECT TEAM 2---</option>
+                        <%for(let i=0;i<=<%=row.length%>;i++){%>
+                            <option value="<%= row[i].team_name %>">
+                                <%= row[i].team_name %>
+                            </option>
+                            <%}%>
+                    </select><br>
+                    <label for="venue">Venue</label>
+                    <input type="text" id="venue" placeholder="Enter venue" name="venue"><br>
+                    <label for="startdate">Start Date</label>
+                    <input type="text" id="startdate" placeholder="Enter start date" name="startdate"><br>
+                    <label for="enddate">End Date</label>
+                    <input type="text" id="enddate" placeholder="Enter end date" name="enddate"><br>
+                    <button type="submit">Add Match</button>
+                </form>
+
+
+            </div>
+        </div>
+        <div id="appendhere" class="row">
+            <% for(let i=0;i<row.length;i++){%>
+                <div class="card col-lg-4">
+                    <div class="card-body">
+                        <h3 class="card-title">
+                            <%= row[i].team_name %>
+                        </h3>
+                    </div>
+                    <a class="card-link" href="/createtournament/<%=tourid%>/addteam/<%= row[i].id %>">Add Players</a>
+                    <a class="card-link" href="#">Edit Team</a>
+                    <a class="card-link" href="#">Delete Team</a>
+
+                </div>
+
+                <% } %>
+
+
+        </div>
+        <a href=<%=`/createtournament/${tourid}/match` %> class="btn btn-primary">Confirm Team</a>
+
+    </div>
+    <script src="/scripts/addteams.js"></script>

@@ -154,7 +154,7 @@ app.get('/createtournament/:tourid/match', async (req, res) => {
     const sqlQuery = 'select team_name from team where tour_id=?';
     const rows = await pool.query(sqlQuery, tour_id);
 
-    const query = 'select * from match where tour_id=?';
+    const query = 'select * from matches where tour_id=?';
     const result = await pool.query(query, tour_id);
 
     if (result.length > 0) {
@@ -164,14 +164,13 @@ app.get('/createtournament/:tourid/match', async (req, res) => {
     }
 
 
-
 })
 
-app.get('*', () => {
+app.get('*', (req, res) => {
     res.render('error404');
 });
 
-app.listen(8000, () => {
+app.listen(8000, (req, res) => {
     console.log('Listening on Port 8000 . . .');
 });
 
@@ -201,4 +200,4 @@ app.listen(8000, () => {
     //     res.status(200).json({ userId: result.insertId });
     // } catch (error) {
     //     res.status(400).send(error.message)
-    // }
+    // 
