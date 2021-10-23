@@ -1,6 +1,10 @@
 <%- include('./partials/header.ejs')%>
     <link rel="stylesheet" href="/stylesheets/createtournament.css">
-    <div class="container-fluid" style="background-color: aqua;">
+    <!-- <script>
+        let tourneys =;
+    </script> -->
+    <div class="container-fluid">
+
         <div class="row">
             <h1>Create Tournament</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam temporibus, recusandae quae, quibusdam
@@ -21,7 +25,13 @@
         </div>
         <hr>
         <div id="appendhere" class="row">
-
+            <% for(let i=0;i<tournames.length;i++){ %>
+                <div class="card col-lg-4" onclick="showtour(i)">
+                    <h3 class="card-title text-center">
+                        <%= tournames[i].name %>
+                    </h3>
+                </div>
+                <% } %>
         </div>
     </div>
     <script src="/scripts/viewtourney.js"></script>

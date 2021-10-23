@@ -1,5 +1,4 @@
 <%- include('./partials/header.ejs')%>
-    <link rel="stylesheet" href="/stylesheets/createtournament.css">
     <div class="container-fluid">
         <div class="row">
             <h1>Create Tournament</h1>
@@ -37,17 +36,31 @@
                     <input type="text" id="salary" placeholder="Enter player Salary:" name="salary"><br>
                     <button type="submit">Add Player</button><br>
                 </form>
-
-                <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, corporis! Aliquid cumque totam
-                    nam, rerum, ab impedit dolorum ex quidem sequi placeat expedita harum velit itaque quasi aspernatur
-                    nemo consectetur.</span>
             </div>
-            <form id='addplayerToDb' method="POST">
-                <input type="submit">
-            </form>
         </div>
         <div id="appendhere" class="row">
+            <% for(let i=0;i<row.length;i++){%>
+                <div class="card col-lg-4">
+                    <div class="card-body bg-dark text-light">
+                        <h3 class="card-title">
+                            <%= row[i].name %>
+                        </h3>
+                        <h6 class="card-subtitle">
+                            <%=row[i].arm + " " +row[i].skill %>
+                        </h6>
+                        <div class="card-text">
+                            Age: <%= row[i].age %><br>
+                                Salary: <%= row[i].salary %><br>
+                                    Role : <%= row[i].role %>
+                        </div>
+                    </div>
+                    <a class="card-link" href="/createtournament/addteam/<%= row[i].id %>">Add Players</a>
+                    <a class="card-link" href="#">Edit Team</a>
+                    <a class="card-link" href="#">Delete Team</a>
 
+                </div>
+
+                <% } %>
         </div>
     </div>
     <script src="/scripts/addplayers.js"></script>

@@ -1,11 +1,18 @@
 document.getElementById('addbutton').addEventListener('click', addplayers);
+document.getElementById('addplayer').setAttribute('action', `/addplayers/team?arr=` + JSON.stringify(playerArrFinal));
 
-function addplayers() {
 
-    const playername = document.getElementById('playername').value;
-    const playerage = document.getElementById('playerage').value;
-    const playerskill = document.getElementById('playerskill').value;
-    const playerrole = document.getElementById('playerrole').value;
+
+function addplayers(playerArrFinal) {
+    var tempDataofPlayer = {
+        'name': document.getElementById('playername').value,
+        'skill': document.getElementById('playerskill').value,
+        'arm': document.getElementById('arm').value,
+        'salary': document.getElementById('salary').value,
+        'age': document.getElementById('playerage').value,
+        'role': document.getElementById('playerrole').value
+    };
+
 
     const cardGrid = document.getElementById('appendhere');
 
@@ -18,19 +25,23 @@ function addplayers() {
 
     const cardtitle = document.createElement('h5');
     cardtitle.classList.add('card-title');
-    cardtitle.innerHTML = playername;
+    cardtitle.innerHTML = tempDataofPlayer.name;
     cardbody.append(cardtitle);
 
     const cardsubtitle = document.createElement('h6');
     cardsubtitle.classList.add('card-subtitle');
-    cardsubtitle.innerHTML = playerrole;
+    cardsubtitle.innerHTML = tempDataofPlayer.role;
     cardbody.append(cardsubtitle);
+
 
     const cardtext = document.createElement('p');
     cardtext.classList.add('card-text');
-    cardtext.innerHTML = "Age: "+ playerage + "<br>Skill: " + playerskill;
+    cardtext.innerHTML = "Age: " + tempDataofPlayer.age + "<br>Skill: " + tempDataofPlayer.skill
+        + "<br>Salary: " + tempDataofPlayer.salary + "<br>Arm: " + tempDataofPlayer.arm
+        ;
     cardbody.append(cardtext);
 
     // card.innerHTML = newteam;
     cardGrid.append(card);
 }
+

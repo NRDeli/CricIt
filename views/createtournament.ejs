@@ -3,30 +3,51 @@
     <div class="container-fluid" style="background-color: aqua;">
         <div class="row">
             <h1>Create Tournament</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam temporibus, recusandae quae, quibusdam
-                rerum soluta saepe possimus at cumque quo, dolor unde pariatur deserunt laboriosam? Assumenda
-                necessitatibus veritatis pariatur debitis?
-                Quia impedit itaque nobis, voluptates cupiditate illum. Ipsa fugit error numquam nisi qui! Ipsum animi,
-                quaerat corporis dolore nihil nulla commodi doloremque minus repellendus distinctio quisquam officiis
-                temporibus aliquam porro!
-                Quam qui dicta voluptas eos adipisci quibusdam doloremque neque? Quaerat nihil ut beatae necessitatibus
-                facere! Accusamus, neque amet perspiciatis culpa aperiam quia temporibus recusandae error, incidunt
-                quasi ipsam sed eius.
-                Repellat rerum incidunt nulla sint? Commodi exercitationem accusantium impedit libero nihil iste.
-                Veritatis molestiae qui, ducimus quisquam nulla, numquam unde quas asperiores nesciunt adipisci porro
-                explicabo cumque in fugiat quod!
-                Aliquid aperiam nemo eligendi cum, placeat eaque consequuntur animi voluptatibus? Voluptatum autem
-                aliquam ipsa officia voluptatem temporibus blanditiis dolores consequuntur, atque maiores fuga, labore
-                beatae eveniet, odio sequi quo quis.</p>
+            <p>Create a custom tournament.
+            </p>
+            <div class="container">
+                <div class="row">
+                    <div class="col-4">
+                        <div class="card">
+                            Step 1: Add Teams
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            Step 2: Add Players
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            Step 3: Add Matches
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
         </div>
         <hr>
         <div class="row">
             <div class="col-8">
-                <input type="text" id="addteam" placeholder="Enter team name" name="addteam">
-                <button type="button" id="addbutton">Add Team</button>
-                <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, corporis! Aliquid cumque totam
-                    nam, rerum, ab impedit dolorum ex quidem sequi placeat expedita harum velit itaque quasi aspernatur
-                    nemo consectetur.</span>
+                <form method='post' action="/createtournament/addteams">
+                    <label for="tourname">Tournament Name</label>
+                    <input type="text" id="tourname" placeholder="Enter tournament name" name="tourname"><br>
+                    <label for="tourformat">Tournament Format</label>
+                    <input type="text" id="tourformat" placeholder="Enter tournament format" name="tourformat"><br>
+                    <label for="numteam">Total Teams</label>
+                    <select name="numteam" id="numteam">
+                        <option value="0">---SELECT TOTAL---</option>
+                        <%for(let i=2;i<=16;i++){%>
+                            <option value="<%=i%>">
+                                <%=i%>
+                            </option>
+                            <%}%>
+                    </select>
+                    <label for="touryear">Tournament Year</label>
+                    <input type="text" id="touryear" placeholder="Enter tournament year" name="touryear"><br>
+                    <button type="submit">Add Tournament</button>
+                </form>
+
             </div>
         </div>
         <div id="appendhere" class="row">

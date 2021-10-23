@@ -4,6 +4,7 @@ function addteams() {
     const addteam = document.getElementById('addteam');
 
     const newteam = addteam.value;
+    addteam.value = "";
     console.log(newteam);
     const cardGrid = document.getElementById('appendhere');
 

@@ -47,7 +47,7 @@ module.exports = pool;
 
 
 //     res.status(200).json({id:req.params.id})
-// });
+// }) 
 
 // router.post('/register', async function(req,res) {
 //     try {

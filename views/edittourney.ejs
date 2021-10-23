@@ -1,6 +1,6 @@
 <%- include('./partials/header.ejs')%>
     <link rel="stylesheet" href="/stylesheets/createtournament.css">
-    <div class="container-fluid">
+    <div class="container-fluid" style="background-color: aqua;">
         <div class="row">
             <h1>Create Tournament</h1>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam temporibus, recusandae quae, quibusdam
@@ -22,32 +22,15 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form action="/createtournament/<%= teamid %>/addplayer" method="POST">
-                    <label for="playername">Player Name: </label>
-                    <input type="text" id="playername" placeholder="Enter player name" name="playername"><br>
-                    <label for="playerage">Player Age: </label>
-                    <input type="text" id="playerage" placeholder="Enter player age" name="playerage"><br>
-                    <label for="playerskill">Player Skill: </label>
-                    <input type="text" id="playerskill" placeholder="Enter player skill" name="playerskill"><br>
-                    <label for="arm">Arm: </label>
-                    <input type="text" id="arm" placeholder="Enter dominant hand" name="arm"><br>
-                    <label for="playerrole">Player Role: </label>
-                    <input type="text" id="playerrole" placeholder="Enter player role" name="playerrole"><br>
-                    <label for="salary">Salary: </label>
-                    <input type="text" id="salary" placeholder="Enter player Salary:" name="salary"><br>
-                    <button type="submit">Add Player</button><br>
-                </form>
-
+                <input type="text" id="addteam" placeholder="Enter team name" name="addteam">
+                <button type="button" id="addbutton">Add Team</button>
                 <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, corporis! Aliquid cumque totam
                     nam, rerum, ab impedit dolorum ex quidem sequi placeat expedita harum velit itaque quasi aspernatur
                     nemo consectetur.</span>
             </div>
-            <form id='addplayerToDb' method="POST">
-                <input type="submit">
-            </form>
         </div>
         <div id="appendhere" class="row">
 
         </div>
     </div>
-    <script src="/scripts/addplayers.js"></script>
+    <script src="/scripts/createtourney.js"></script>
