@@ -78,7 +78,6 @@ app.post('/createtournament/addteams', async (req, res) => {
 })
 
 app.post('/createtournament/:tourid/addteam', async (req, res) => {
-    //console.log(req.body);
     let tour_id = req.params.tourid;
 
     try {
@@ -87,47 +86,90 @@ app.post('/createtournament/:tourid/addteam', async (req, res) => {
         const result = await pool.query(query, [req.body.addteam, tour_id]);
         const team_id = result.insertId;
 
-        const sqlQuery = 'SELECT * from team WHERE tour_id=?';
-        const rows = await pool.query(sqlQuery, tour_id);
-        console.log(rows);
+        res.redirect(`/createtournament/${tour_id}/team`);
 
-        res.render('addteams', { tourid: tour_id, row: rows });
-        // console.log(rows);
-        // console.log(req.body);
     } catch (error) {
         res.status(400).send(error.message)
     }
 })
 
-app.get('/createtournament/addteam/:teamid', (req, res) => {
+app.get('/createtournament/:tourid/team', async (req, res) => {
+    let tour_id = req.params.tourid;
+    const sqlQuery = 'SELECT * from team WHERE tour_id=?';
+    const rows = await pool.query(sqlQuery, tour_id);
+    res.render('addteams', { tourid: tour_id, row: rows });
+})
+
+app.get('/createtournament/:tourid/addteam/:teamid', (req, res) => {
     let team_id = req.params.teamid;
-    res.render('addplayers', { teamid: team_id });
+    let tour_id = req.params.tourid;
+    res.redirect(`/createtournament/${tour_id}/${team_id}/player`);
 
 })
 
-app.post('/createtournament/:teamid/addplayer', async (req, res) => {
+app.post('/createtournament/:tourid/:teamid/addplayer', async (req, res) => {
     let team_id = req.params.teamid;
-
+    let tour_id = req.params.tourid;
     let { playername, playerage, playerskill, arm, playerrole, salary } = req.body;
 
-    //console.log(playername + " " + playerage + " " + playerskill + " " + arm + " " + playerrole + " " + salary);
+    //console.log(playername + " " + playerage + " " + playerskill + " " + arm + " " + playerrole + " " + salary); 
 
     const query = 'INSERT INTO player (name,skill, hand, salary, team_id, age,role) VALUES (?,?,?,?,?,?,?)';
     const result = await pool.query(query, [playername, playerskill, arm, salary, team_id, playerage, playerrole]);
     const player_id = result.insertId;
 
+    res.redirect(`/createtournament/${tour_id}/${team_id}/player`);
+
+})
+
+app.get('/createtournament/:tourid/:teamid/player', async (req, res) => {
+    let team_id = req.params.teamid;
+    let tour_id = req.params.tourid;
+
     const sqlQuery = 'SELECT * from player WHERE team_id=?';
     const rows = await pool.query(sqlQuery, team_id);
-    console.log(rows);
 
-    res.render('addplayer', { teamid: team_id, row: rows })
+    if (rows.length > 0) {
+        res.render('addplayer', { teamid: team_id, row: rows, tourid: tour_id })
+    } else {
+        res.render('addplayers', { teamid: team_id, tourid: tour_id });
+    }
 
+})
+
+app.post('/createtournament/:tourid/addmatch', async (req, res) => {
+    let tour_id = req.params.tourid;
+    let { teamone, teamtwo, venue, startdate, enddate } = req.body;
+    const query = 'INSERT INTO match (tour_id , team1_id , team2_id , venue , startdate , enddate) VALUES (?,?,?,?,?,?)';
+    const result = await pool.query(query, [tour_id, teamone, teamtwo, venue, startdate, enddate]);
+    const match_id = result.insertId;
+
+    res.redirect(`/createtournament/${tour_id}/match`);
+
+})
+
+app.get('/createtournament/:tourid/match', async (req, res) => {
+    let tour_id = req.params.tourid;
+
+    const sqlQuery = 'select team_name from team where tour_id=?';
+    const rows = await pool.query(sqlQuery, tour_id);
+
+    const query = 'select * from match where tour_id=?';
+    const result = await pool.query(query, tour_id);
+
+    if (result.length > 0) {
+        res.render('addmatches', { tourid: tour_id, row: rows, matches: result });
+    } else {
+        res.render('addmatch', { tourid: tour_id, row: rows })
+    }
 
 
 
 })
 
-
+app.get('*', () => {
+    res.render('error404');
+});
 
 app.listen(8000, () => {
     console.log('Listening on Port 8000 . . .');

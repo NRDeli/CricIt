@@ -30,15 +30,35 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form action="/createtournament/<%= tourid %>/addteam" method='post'>
-                    <label for="addteam">Team Name</label>
-                    <input type="text" id="addteam" placeholder="Enter team name" name="addteam">
-                    <button type="submit">Add Team</button>
+                <form action="/createtournament/<%= tourid %>/addmatch" method='post'>
+                    <label for="teamone">Team 1</label>
+                    <select name="teamone" id="teamone">
+                        <option value="0">---SELECT TEAM 1---</option>
+                        <%for(let i=0;i<=<%=row.length%>;i++){%>
+                            <option value="<%= row[i].team_name %>">
+                                <%= row[i].team_name %>
+                            </option>
+                            <%}%>
+                    </select><br>
+                    <label for="teamone">Team 2</label>
+                    <select name="teamtwo" id="teamtwo">
+                        <option value="0">---SELECT TEAM 2---</option>
+                        <%for(let i=0;i<=<%=row.length%>;i++){%>
+                            <option value="<%= row[i].team_name %>">
+                                <%= row[i].team_name %>
+                            </option>
+                            <%}%>
+                    </select><br>
+                    <label for="venue">Venue</label>
+                    <input type="text" id="venue" placeholder="Enter venue" name="venue"><br>
+                    <label for="startdate">Start Date</label>
+                    <input type="text" id="startdate" placeholder="Enter start date" name="startdate"><br>
+                    <label for="enddate">End Date</label>
+                    <input type="text" id="enddate" placeholder="Enter end date" name="enddate"><br>
+                    <button type="submit">Add Match</button>
                 </form>
 
-                <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Deserunt, corporis! Aliquid cumque totam
-                    nam, rerum, ab impedit dolorum ex quidem sequi placeat expedita harum velit itaque quasi aspernatur
-                    nemo consectetur.</span>
+
             </div>
         </div>
         <div id="appendhere" class="row">

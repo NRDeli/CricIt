@@ -22,7 +22,7 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form action="/createtournament/<%= teamid %>/addplayer" method="POST">
+                <form action="/createtournament/<%=tourid%>/<%= teamid %>/addplayer" method="POST">
                     <label for="playername">Player Name: </label>
                     <input type="text" id="playername" placeholder="Enter player name" name="playername"><br>
                     <label for="playerage">Player Age: </label>
