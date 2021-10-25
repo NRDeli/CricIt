@@ -1,7 +1,8 @@
 <%- include('./partials/header.ejs')%>
     <link rel="stylesheet" href="/stylesheets/createtournament.css">
     <script>
-        let tour = "<%= tourinfo %>";
+        let match = "<%= matchinfo %>";
+        let tour_id = "<%= tourid %>";
     </script>
     <!-- <script>
         let tourneys =;
@@ -9,14 +10,14 @@
     <div class="container-fluid">
 
         <div class="row">
-            <h1>Create Tournament</h1>
+            <h1>View Matches</h1>
         </div>
         <hr>
         <div id="appendhere" class="row">
             <% for(let i=0;i<tourinfo.length;i++){ %>
-                <div class="card col-lg-4" onclick="showtour(i)" href=>
+                <div class="card col-lg-4" onclick="showmatch(i)" href=>
                     <h3 class="card-title text-center">
-                        <%= tourinfo[i].name %>
+                        <%= matchinfo[i].name %>
                     </h3>
                     <div class="card-body">
 
@@ -25,4 +26,4 @@
                 <% } %>
         </div>
     </div>
-    <script src="/scripts/viewtourney.js"></script>
+    <script src="/scripts/viewmatches.js"></script>

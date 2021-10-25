@@ -166,6 +166,57 @@ app.get('/createtournament/:tourid/match', async (req, res) => {
 
 })
 
+
+app.get('/viewtournament',async (req,res)=>{
+    
+    const sqlQuery = 'select * from tournament where user_id=?';
+    const rows = await pool.query(sqlQuery, 1);
+
+
+    res.render('viewtourney',{tourinfo : rows});
+})
+
+app.get('/viewtournament/:tourid',async(req,res)=>{
+    let tour_id = req.params.tourid;
+
+    const sqlQuery = 'select * from matches where tour_id=?';
+    const rows = await pool.query(sqlQuery, tour_id);
+
+    res.render('viewmatches',{ matchinfo : rows , tourid : tour_id});
+})
+
+app.get('/viewtournament/:tourid/:matchid',async(req,res)=>{
+    let match_id = req.params.matchid;
+    let tour_id = req.params.tourid;
+    
+    
+
+    //res.render('match',{ teams : result , matchid : match_id});
+    res.redirect(`/match/${match_id}/commentary`);
+
+})
+
+app.get('/match/:matchid/commentary',async (req,res)=>{
+    let match_id = req.params.matchid;
+    
+    const sqlQuery = 'select * from matches where match_id=?';
+    const rows = await pool.query(sqlQuery, match_id);
+
+    const player1query = 'select (id,name,team_id) from player where team_id=?' 
+    const players1 = await pool.query(player1query,rows[0].team1_id);
+
+    const player2query = 'select (id,name,team_id) from player where team_id=? '
+    const players2 = await pool.query(player2query,rows[0].team2_id);
+
+    res.render('commentary',{ row : rows , team1 : players1 , team2 : players2 });
+
+
+
+})
+
+
+
+
 app.get('*', (req, res) => {
     res.render('error404');
 });
