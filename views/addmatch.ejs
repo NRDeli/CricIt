@@ -34,7 +34,7 @@
                     <label for="teamone">Team 1</label>
                     <select name="teamone" id="teamone">
                         <option value="0">---SELECT TEAM 1---</option>
-                        <%for(let i=0;i<=<%=row.length%>;i++){%>
+                        <%for(let i in <%=row.length%>){%>
                             <option value="<%= row[i].team_name %>">
                                 <%= row[i].team_name %>
                             </option>
@@ -43,7 +43,7 @@
                     <label for="teamone">Team 2</label>
                     <select name="teamtwo" id="teamtwo">
                         <option value="0">---SELECT TEAM 2---</option>
-                        <%for(let i=0;i<=<%=row.length%>;i++){%>
+                        <%for(let i in <%=row.length%>){%>
                             <option value="<%= row[i].team_name %>">
                                 <%= row[i].team_name %>
                             </option>
@@ -62,7 +62,7 @@
             </div>
         </div>
         <div id="appendhere" class="row">
-            <% for(let i=0;i<row.length;i++){%>
+            <% for(let i in <%=row.length%>){%>
                 <div class="card col-lg-4">
                     <div class="card-body">
                         <h3 class="card-title">
