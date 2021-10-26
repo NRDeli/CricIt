@@ -41,25 +41,28 @@
                     nemo consectetur.</span>
             </div>
         </div>
-        <div id="appendhere" class="row">
-            <% for(let i=0;i<row.length;i++){%>
-                <div class="card col-lg-4">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <%= row[i].team_name %>
-                        </h3>
+        <% if(row.length !=0){ %>
+            <div id="appendhere" class="row">
+                <% for(let i=0;i<row.length;i++){%>
+                    <div class="card col-lg-4">
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                <%= row[i].team_name %>
+                            </h3>
+                        </div>
+                        <a class="card-link" href="/createtournament/<%=tourid%>/addteam/<%= row[i].id %>">Add
+                            Players</a>
+                        <a class="card-link" href="#">Edit Team</a>
+                        <a class="card-link" href="#">Delete Team</a>
+
                     </div>
-                    <a class="card-link" href="/createtournament/<%=tourid%>/addteam/<%= row[i].id %>">Add Players</a>
-                    <a class="card-link" href="#">Edit Team</a>
-                    <a class="card-link" href="#">Delete Team</a>
 
-                </div>
-
-                <% } %>
+                    <% } %>
 
 
-        </div>
-        <a href="/createtournament/<%= tourid %>/addmatch" class="btn btn-primary">Confirm Team</a>
+            </div>
+            <% } %>
+                <a href="/createtournament/<%= tourid %>/addmatch" class="btn btn-primary">Confirm Team</a>
 
     </div>
     <script src="/scripts/addteams.js"></script>

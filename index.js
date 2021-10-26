@@ -6,6 +6,9 @@ Mann Doshi - 191080026
 Donovan Crasta - 191080026
 Meet Parekh - 191080055
 Aayush J Shah - 191080067
+
+Github Link : NRDeli/CricIt
+Tech Stack Used : NodeJS, ExpressJS, MariaDB, HTML, CSS, Javascript, Bootstrap
 */
 const express = require('express');
 const path = require('path');
@@ -43,9 +46,6 @@ app.post('/checksign', async (req, res) => {
 
     console.log(email)
     try {
-        //const {email, password} = req.body;
-
-        //const encryptedPassword = await bcrypt.hash(password,10)
 
         const sqlQuery = 'INSERT INTO user (firstname,lastname, username, password, email) VALUES (?,?,?,?,?)';
         const result = await pool.query(sqlQuery, [fname, lname, user, pass, email]);
@@ -56,31 +56,23 @@ app.post('/checksign', async (req, res) => {
     }
 });
 app.get('/addPlayers', (req, res) => {
-    res.render('addplayers.ejs');
+    res.render('addplayers');
 })
 app.get('/createtournament', (req, res) => {
-    res.render('createtournament.ejs');
+    res.render('createtournament');
 })
 
 app.post('/createtournament/addteams', async (req, res) => {
-    //console.log(req.body);
-    //res.send(req.body);
     let { tourname, tourformat, totalteam, touryear } = req.body;
     let numteams = parseInt(req.body.numteam);
-    //console.log(tourname + " " + tourformat + " " + numteams + " " + touryear);
     try {
-        // const {email, password} = req.body;
-
-        // const encryptedPassword = await bcrypt.hash(password,10)
-
         const sqlQuery = 'INSERT INTO tournament (name, format, tot_teams, year) VALUES (?,?,?,?)';
         const result = await pool.query(sqlQuery, [tourname, tourformat, numteams, touryear]);
 
-        //res.status(200).json({ tourId: result.insertId });
         const tour_id = result.insertId;
 
 
-        res.render('addteam', { tourid: tour_id });
+        res.render('addteams', { tourid: tour_id, row: [] });
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -121,8 +113,6 @@ app.post('/createtournament/:tourid/:teamid/addplayer', async (req, res) => {
     let tour_id = req.params.tourid;
     let { playername, playerage, playerskill, arm, playerrole, salary } = req.body;
 
-    //console.log(playername + " " + playerage + " " + playerskill + " " + arm + " " + playerrole + " " + salary); 
-
     const query = 'INSERT INTO player (name,skill, hand, salary, team_id, age,role) VALUES (?,?,?,?,?,?,?)';
     const result = await pool.query(query, [playername, playerskill, arm, salary, team_id, playerage, playerrole]);
     const player_id = result.insertId;
@@ -138,45 +128,35 @@ app.get('/createtournament/:tourid/:teamid/player', async (req, res) => {
     const sqlQuery = 'SELECT * from player WHERE team_id=?';
     const rows = await pool.query(sqlQuery, team_id);
 
-    if (rows.length > 0) {
-        res.render('addplayer', { teamid: team_id, row: rows, tourid: tour_id })
-    } else {
-        res.render('addplayers', { teamid: team_id, tourid: tour_id });
-    }
+    res.render('addplayer', { teamid: team_id, row: rows, tourid: tour_id });
 
 })
 
-app.get('/createtournament/:tourid/match', async (req, res) => {
+app.post('/createtournament/:tourid/match', async (req, res) => {
     let tour_id = req.params.tourid;
     let teamone = req.body.teamone;
     let teamtwo = req.body.teamtwo;
     let venue = req.body.venue;
     let startdate = req.body.startdate;
     let enddate = req.body.enddate;
-    const query = 'INSERT INTO match (tour_id , team1_name , team2_name , venue , startdate , enddate) VALUES (?,?,?,?,?,?)';
+    const query = 'INSERT INTO matches  (tour_id , team1_name , team2_name , venue , start_date , end_date) VALUES (?,?,?,?,?,?)';
     const result = await pool.query(query, [tour_id, teamone, teamtwo, venue, startdate, enddate]);
     const match_id = result.insertId;
 
-    res.redirect(`/createtournament/${tour_id}/match`);
+    res.redirect(`/createtournament/${tour_id}/addmatch`);
 
 })
 
 app.get('/createtournament/:tourid/addmatch', async (req, res) => {
     let tour_id = req.params.tourid;
 
-    const sqlQuery = 'select team_name from team where tour_id=?';
+    const sqlQuery = 'select team_name,id from team where tour_id=?';
     const rows = await pool.query(sqlQuery, tour_id);
 
     const query = 'select * from matches where tour_id=?';
     const result = await pool.query(query, tour_id);
 
-    if (result.length > 0) {
-        res.render('addmatches', { tourid: tour_id, row: rows, matches: result });
-    } else {
-        res.render('addmatch', { tourid: tour_id, row: rows })
-    }
-
-
+    res.render('addmatch', { tourid: tour_id, row: rows, matches: result });
 })
 
 // const router = AdminBroExpressjs.buildAuthenticatedRouter(adminBro, {
@@ -195,8 +175,8 @@ app.get('/createtournament/:tourid/addmatch', async (req, res) => {
 
 app.get('/viewtournament', async (req, res) => {
 
-    const sqlQuery = 'select * from tournament where user_id=?';
-    const rows = await pool.query(sqlQuery, 1);
+    const sqlQuery = 'select * from tournament';
+    const rows = await pool.query(sqlQuery);
 
 
     res.render('viewtourney', { tourinfo: rows });
@@ -222,11 +202,14 @@ app.get('/viewtournament/:tourid/:matchid', async (req, res) => {
 
 })
 
-app.get('/match/:matchid/commentary', async (req, res) => {
+app.get('/viewtournament/:tourid/:matchid/commentary', async (req, res) => {
     let match_id = req.params.matchid;
 
     const sqlQuery = 'select * from matches where match_id=?';
     const rows = await pool.query(sqlQuery, match_id);
+
+    const score_query = 'select * from scorecard where match_id=?';
+    const score_result = await pool.query(score_query, match_id);
 
     const player1query = 'select (id,name,team_id) from player where team_id=?'
     const players1 = await pool.query(player1query, rows[0].team1_id);
@@ -234,18 +217,11 @@ app.get('/match/:matchid/commentary', async (req, res) => {
     const player2query = 'select (id,name,team_id) from player where team_id=? '
     const players2 = await pool.query(player2query, rows[0].team2_id);
 
-    res.render('commentary', { row: rows, team1: players1, team2: players2 });
+    res.render('scorecard', { row: rows, team1: players1, team2: players2 });
 
 
 
 })
-
-
-
-
-app.get('*', (req, res) => {
-    res.render('error404');
-});
 
 app.listen(8000, (req, res) => {
     console.log('Listening on Port 8000 . . .');

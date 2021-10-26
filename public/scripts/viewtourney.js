@@ -1,4 +1,4 @@
-function showtour(i){
-    tourid = tour[i].id;
-    window.location.href = `/viewtournament/${tourid}`;
-}
+// function showtour(i) {
+//     tourid = tour[i].id;
+//     window.location.href = "/viewtournament";
+// }

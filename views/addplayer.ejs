@@ -2,21 +2,6 @@
     <div class="container-fluid">
         <div class="row">
             <h1>Create Tournament</h1>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam temporibus, recusandae quae, quibusdam
-                rerum soluta saepe possimus at cumque quo, dolor unde pariatur deserunt laboriosam? Assumenda
-                necessitatibus veritatis pariatur debitis?
-                Quia impedit itaque nobis, voluptates cupiditate illum. Ipsa fugit error numquam nisi qui! Ipsum animi,
-                quaerat corporis dolore nihil nulla commodi doloremque minus repellendus distinctio quisquam officiis
-                temporibus aliquam porro!
-                Quam qui dicta voluptas eos adipisci quibusdam doloremque neque? Quaerat nihil ut beatae necessitatibus
-                facere! Accusamus, neque amet perspiciatis culpa aperiam quia temporibus recusandae error, incidunt
-                quasi ipsam sed eius.
-                Repellat rerum incidunt nulla sint? Commodi exercitationem accusantium impedit libero nihil iste.
-                Veritatis molestiae qui, ducimus quisquam nulla, numquam unde quas asperiores nesciunt adipisci porro
-                explicabo cumque in fugiat quod!
-                Aliquid aperiam nemo eligendi cum, placeat eaque consequuntur animi voluptatibus? Voluptatum autem
-                aliquam ipsa officia voluptatem temporibus blanditiis dolores consequuntur, atque maiores fuga, labore
-                beatae eveniet, odio sequi quo quis.</p>
         </div>
         <hr>
         <div class="row">
@@ -38,28 +23,30 @@
                 </form>
             </div>
         </div>
-        <div id="appendhere" class="row">
-            <% for(let i=0;i<row.length;i++){%>
-                <div class="card col-lg-4">
-                    <div class="card-body bg-dark text-light">
-                        <h3 class="card-title">
-                            <%= row[i].name %>
-                        </h3>
-                        <h6 class="card-subtitle">
-                            <%=row[i].arm + " " +row[i].skill %>
-                        </h6>
-                        <div class="card-text">
-                            Age: <%= row[i].age %><br>
-                                Salary: <%= row[i].salary %><br>
-                                    Role : <%= row[i].role %>
+        <% if(row.length !=0){ %>
+            <div id="appendhere" class="row">
+                <% for(let i=0;i<row.length;i++){%>
+                    <div class="card col-lg-4">
+                        <div class="card-body bg-dark text-light">
+                            <h3 class="card-title">
+                                <%= row[i].name %>
+                            </h3>
+                            <h6 class="card-subtitle">
+                                <%=row[i].arm + " " +row[i].skill %>
+                            </h6>
+                            <div class="card-text">
+                                Age: <%= row[i].age %><br>
+                                    Salary: <%= row[i].salary %><br>
+                                        Role : <%= row[i].role %>
+                            </div>
                         </div>
+
+
                     </div>
 
-
-                </div>
-
-                <% } %>
-        </div>
-        <a href="/createtournament/<%= tourid %>/team" class="btn btn-primary">Confirm Team</a>
+                    <% } %>
+            </div>
+            <% } %>
+                <a href="/createtournament/<%= tourid %>/team" class="btn btn-primary">Confirm Team</a>
     </div>
     <script src="/scripts/addplayers.js"></script>

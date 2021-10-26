@@ -30,24 +30,24 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form action="/createtournament/<%= tourid %>/addmatch" method='post'>
+                <form action="/createtournament/<%= tourid %>/match" method='post'>
                     <label for="teamone">Team 1</label>
                     <select name="teamone" id="teamone">
                         <option value="0">---SELECT TEAM 1---</option>
-                        <%for(let i in <%=row.length%>){%>
+                        <%for(let i=0;i<row.length;i++){%>
                             <option value="<%= row[i].team_name %>">
                                 <%= row[i].team_name %>
                             </option>
-                            <%}%>
+                            <% } %>
                     </select><br>
                     <label for="teamone">Team 2</label>
                     <select name="teamtwo" id="teamtwo">
                         <option value="0">---SELECT TEAM 2---</option>
-                        <%for(let i in <%=row.length%>){%>
+                        <%for(let i=0;i<row.length;i++){%>
                             <option value="<%= row[i].team_name %>">
                                 <%= row[i].team_name %>
                             </option>
-                            <%}%>
+                            <% } %>
                     </select><br>
                     <label for="venue">Venue</label>
                     <input type="text" id="venue" placeholder="Enter venue" name="venue"><br>
@@ -61,25 +61,21 @@
 
             </div>
         </div>
-        <div id="appendhere" class="row">
-            <% for(let i in <%=row.length%>){%>
-                <div class="card col-lg-4">
-                    <div class="card-body">
-                        <h3 class="card-title">
-                            <%= row[i].team_name %>
-                        </h3>
+
+        <% if(matches.length !=0){ %>
+            <div class="row">
+                <% for(let i=0;i<matches.length;i++){ %>
+                    <div class="card col-lg-4">
+                        <div class="card-title">
+                            Match <%=i+1%>
+                        </div>
+                        <div class="card-body">
+                            <%= matches[i].team1_name.toUpperCase() %> vs <%= matches[i].team2_name.toUpperCase() %>
+                        </div>
                     </div>
-                    <a class="card-link" href="/createtournament/<%=tourid%>/addteam/<%= row[i].id %>">Add Players</a>
-                    <a class="card-link" href="#">Edit Team</a>
-                    <a class="card-link" href="#">Delete Team</a>
-
-                </div>
-
-                <% } %>
-
-
-        </div>
-        <a href=<%=`/createtournament/${tourid}/match` %> class="btn btn-primary">Confirm Team</a>
+                    <% } %>
+            </div>
+            <% } %>
 
     </div>
     <script src="/scripts/addteams.js"></script>
