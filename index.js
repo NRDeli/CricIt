@@ -159,19 +159,6 @@ app.get('/createtournament/:tourid/addmatch', async (req, res) => {
     res.render('addmatch', { tourid: tour_id, row: rows, matches: result });
 })
 
-// const router = AdminBroExpressjs.buildAuthenticatedRouter(adminBro, {
-//     authenticate: async (email, password) => {
-//       const user = await User.findOne({ email })
-//       if (user) {
-//         const matched = await bcrypt.compare(password, user.encryptedPassword)
-//         if (matched) {
-//           return user
-//         }
-//       }
-//       return false
-//     },
-//     cookiePassword: 'some-secret-password-used-to-secure-cookie',
-//   })
 
 app.get('/viewtournament', async (req, res) => {
 
@@ -195,9 +182,6 @@ app.get('/viewtournament/:tourid/:matchid', async (req, res) => {
     let match_id = req.params.matchid;
     let tour_id = req.params.tourid;
 
-
-
-    //res.render('match',{ teams : result , matchid : match_id});
     res.redirect(`/match/${match_id}/commentary`);
 
 })
@@ -228,29 +212,3 @@ app.listen(8000, (req, res) => {
 });
 
 
-
-
-
-
-
-
-//res.send('Welcome to CricIt.');
-    // try {
-    //     const sqlQuery = 'SELECT * FROM player';
-    //     const rows = await pool.query(sqlQuery, req.params.id);
-    //     res.status(200).json(rows);
-    // } catch (error) {
-    //     res.status(400).send(error.message)
-    // }
-    // try {
-    //     //const {email, password} = req.body;
-
-    //     //const encryptedPassword = await bcrypt.hash(password,10)
-
-    //     const sqlQuery = 'INSERT INTO player (id, name,skill,hand,salary) VALUES (?,?,?,?,?)';
-    //     const result = await pool.query(sqlQuery, [1, 'Virat Kohli', 'Batter', 'Right', 70000000]);
-
-    //     res.status(200).json({ userId: result.insertId });
-    // } catch (error) {
-    //     res.status(400).send(error.message)
-    // 
