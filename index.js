@@ -28,6 +28,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 
+
+const isLoggedin = (req,res,next)=>{
+    if(req.session.loggedin){
+        next();
+    }else{
+        res.redirect('/login');
+    }
+}
+
+const isAdmin = (req,res,next) => {
+    if(req.session.name == 'admin12345'){
+        next();
+    }else{
+        res.redirect('/dashboard');
+    }
+}
+
+
+
 app.get('/', (req, res) => {
     res.render('index');
 });
@@ -53,7 +72,7 @@ app.post('/checksign', async (req, res) => {
         const sqlQuery = 'INSERT INTO user (firstname,lastname, username, password) VALUES (?,?,?,?)';
         const result = await pool.query(sqlQuery, [fname, lname, user, pass]);
 
-        res.status(200).json({ userId: result.insertId });
+        res.redirect('/login');
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -88,20 +107,20 @@ app.get('/logout', function (req, res) {
 });
 
 
-app.get('/dashboard', (req, res) => {
-    console.log(req.session.name);
-    res.render('dashboard');
+app.get('/dashboard', isLoggedin , (req, res) => {
+    const username = req.session.name;
+    res.render('dashboard', { user : username });
 })
 
 
-app.get('/addPlayers', (req, res) => {
+app.get('/addPlayers', isLoggedin ,(req, res) => {
     res.render('addplayers');
 })
-app.get('/createtournament', (req, res) => {
+app.get('/createtournament', isAdmin ,(req, res) => {
     res.render('createtournament');
 })
 
-app.post('/createtournament/addteams', async (req, res) => {
+app.post('/createtournament/addteams' ,async (req, res) => {
     let { tourname, tourformat, totalteam, touryear } = req.body;
     let numteams = parseInt(req.body.numteam);
     try {
@@ -133,14 +152,14 @@ app.post('/createtournament/:tourid/addteam', async (req, res) => {
     }
 })
 
-app.get('/createtournament/:tourid/team', async (req, res) => {
+app.get('/createtournament/:tourid/team', isAdmin , async (req, res) => {
     let tour_id = req.params.tourid;
     const sqlQuery = 'SELECT * from team WHERE tour_id=?';
     const rows = await pool.query(sqlQuery, tour_id);
     res.render('addteams', { tourid: tour_id, row: rows });
 })
 
-app.get('/createtournament/:tourid/addteam/:teamid', (req, res) => {
+app.get('/createtournament/:tourid/addteam/:teamid', isAdmin , (req, res) => {
     let team_id = req.params.teamid;
     let tour_id = req.params.tourid;
     res.redirect(`/createtournament/${tour_id}/${team_id}/player`);
@@ -160,7 +179,7 @@ app.post('/createtournament/:tourid/:teamid/addplayer', async (req, res) => {
 
 })
 
-app.get('/createtournament/:tourid/:teamid/player', async (req, res) => {
+app.get('/createtournament/:tourid/:teamid/player', isAdmin ,async (req, res) => {
     let team_id = req.params.teamid;
     let tour_id = req.params.tourid;
 
@@ -186,7 +205,7 @@ app.post('/createtournament/:tourid/match', async (req, res) => {
 
 })
 
-app.get('/createtournament/:tourid/addmatch', async (req, res) => {
+app.get('/createtournament/:tourid/addmatch', isAdmin , async (req, res) => {
     let tour_id = req.params.tourid;
 
     const sqlQuery = 'select team_name,id from team where tour_id=?';
@@ -199,7 +218,7 @@ app.get('/createtournament/:tourid/addmatch', async (req, res) => {
 })
 
 
-app.get('/viewtournament', async (req, res) => {
+app.get('/viewtournament', isLoggedin ,async (req, res) => {
 
     const sqlQuery = 'select * from tournament';
     const rows = await pool.query(sqlQuery);
@@ -208,7 +227,7 @@ app.get('/viewtournament', async (req, res) => {
     res.render('viewtourney', { tourinfo: rows });
 })
 
-app.get('/viewtournament/:tourid', async (req, res) => {
+app.get('/viewtournament/:tourid', isLoggedin ,async (req, res) => {
     let tour_id = req.params.tourid;
 
     const sqlQuery = 'select * from matches where tour_id=?';
@@ -217,7 +236,7 @@ app.get('/viewtournament/:tourid', async (req, res) => {
     res.render('viewmatches', { matchinfo: rows, tourid: tour_id });
 })
 
-app.get('/viewtournament/:tourid/:matchid', async (req, res) => {
+app.get('/viewtournament/:tourid/:matchid', isLoggedin , async (req, res) => {
     let match_id = req.params.matchid;
     let tour_id = req.params.tourid;
 
@@ -225,8 +244,13 @@ app.get('/viewtournament/:tourid/:matchid', async (req, res) => {
 
 })
 
-app.get('/viewtournament/:tourid/:matchid/commentary', async (req, res) => {
+app.get('/viewtournament/:tourid/:matchid/updatescore', isLoggedin ,async (req, res) => {
     let match_id = req.params.matchid;
+    let tour_id = req.params.tourid;
+    let isadmin = false;
+    if(req.session.name == 'admin12345'){
+        isadmin = true;
+    }
 
     const sqlQuery = 'select * from matches where match_id=?';
     const rows = await pool.query(sqlQuery, match_id);
@@ -234,13 +258,13 @@ app.get('/viewtournament/:tourid/:matchid/commentary', async (req, res) => {
     const score_query = 'select * from scorecard where match_id=?';
     const score_result = await pool.query(score_query, match_id);
 
-    const player1query = 'select (id,name,team_id) from player where team_id=?'
+    const player1query = 'select * from player where team_id=?'
     const players1 = await pool.query(player1query, rows[0].team1_id);
 
-    const player2query = 'select (id,name,team_id) from player where team_id=? '
+    const player2query = 'select * from player where team_id=? '
     const players2 = await pool.query(player2query, rows[0].team2_id);
 
-    res.render('scorecard', { row: rows, team1: players1, team2: players2 });
+    res.render('updatescore', { row: rows, team1: players1, team2: players2 , matchid : match_id , admin : isadmin , tourid : tour_id , scorecard : score_result});
 
 
 

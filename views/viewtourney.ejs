@@ -18,8 +18,11 @@
                         <%= tourinfo[i].name %>
                     </div>
                     <div class="card-body">
-                        <a class="card-link" href="/viewtournament/<%=tourinfo[i].id%>">
-                            View matches
+                        <a class="card-link btn btn-primary" href="/viewtournament/<%=tourinfo[i].id%>">
+                            View Tournament
+                        </a>
+                        <a class="card-link btn btn-primary" href="/deletetournament/<%=tourinfo[i].id%>">
+                            Delete Tournament
                         </a>
                     </div>
                 </div>

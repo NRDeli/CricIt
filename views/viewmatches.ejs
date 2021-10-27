@@ -8,7 +8,7 @@
         <hr>
         <div id="appendhere" class="row">
             <% for(let i=0;i<matchinfo.length;i++){ %>
-                <div class="card col-lg-4" onclick="showmatch(i)" href=>
+                <div class="card col-lg-4">
                     <h3 class="card-title text-center">
                         Match <%=i+1%>
                     </h3>
@@ -16,8 +16,11 @@
                         <div class="card-text">
                             <%= matchinfo[i].team1_name.toUpperCase() %> vs <%= matchinfo[i].team2_name.toUpperCase() %>
                         </div>
-                        <a class="card-link" href="#">
+                        <a class="card-link btn btn-primary" href="/viewmatch/<%= matchinfo[i].tour_id %>/<%= matchinfo[i].id %>/scorecard">
                             View Match
+                        </a>
+                        <a class="card-link btn btn-primary" href="/deletematch/<%= matchinfo[i].tour_id %>/<%= matchinfo[i].id %>">
+                            Delete Match
                         </a>
                     </div>
                 </div>
