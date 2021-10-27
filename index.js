@@ -16,6 +16,7 @@ const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 dotenv.config({ path: '.env-local' });
 const pool = require('./public/scripts/database');
+const session = require('express-session');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -24,6 +25,8 @@ app.use(express.static(__dirname + '/public'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: true }));
 
 app.get('/', (req, res) => {
     res.render('index');
@@ -47,14 +50,50 @@ app.post('/checksign', async (req, res) => {
     console.log(email)
     try {
 
-        const sqlQuery = 'INSERT INTO user (firstname,lastname, username, password, email) VALUES (?,?,?,?,?)';
-        const result = await pool.query(sqlQuery, [fname, lname, user, pass, email]);
+        const sqlQuery = 'INSERT INTO user (firstname,lastname, username, password) VALUES (?,?,?,?)';
+        const result = await pool.query(sqlQuery, [fname, lname, user, pass]);
 
         res.status(200).json({ userId: result.insertId });
     } catch (error) {
         res.status(400).send(error.message)
     }
 });
+
+app.post('/authenticate', async (req, res) => {
+
+    var username = req.body.username;
+    var password = req.body.password;
+
+
+    const sqlQuery = 'SELECT * FROM user WHERE username=? AND password=?';
+    const rows = await pool.query(sqlQuery, [username, password]);
+    if (rows.length <= 0) {
+        //req.flash('error', 'Please correct enter email and Password!')
+        res.redirect('/login')
+    }
+    else { // if user found
+        // render to views/user/edit.ejs template file
+        req.session.loggedin = true;
+        req.session.name = rows[0].username;
+        res.redirect('/dashboard');
+
+    }
+})
+
+
+app.get('/logout', function (req, res) {
+    req.session.destroy();
+    //req.flash('success', 'Login Again Here');
+    res.redirect('/login');
+});
+
+
+app.get('/dashboard', (req, res) => {
+    console.log(req.session.name);
+    res.render('dashboard');
+})
+
+
 app.get('/addPlayers', (req, res) => {
     res.render('addplayers');
 })
